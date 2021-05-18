@@ -1,0 +1,60 @@
+- Display (line 32) changed dimension to 1920x1080
+- Display (line 13) removed x offset
+- Display line 72 working with Alien offsets, creating more aliens
+
+(Need to increase alien movement width and height)
+
+- Display line 205, extended alien movement space
+- Display line 188, extended alien drop sapce
+
+- Display line 20,21 extending lengthrow and lostpos
+
+- Display line 95, testing without bullet delay
+
+- Spaceship line 41 change dimension
+
+- Alien messing around with speeds
+
+- Display, adding a loop inside checkCollision that will set bullets invisible if it is off the screen, so that it gets deleted.
+
+-Display line 25, added menu boolean
+
+- Display, adding menu to paintcomponent
+
+- Display, editing paintBackground() so that I can fit menu in...
+
+- Menu, created for Overlay sprite
+
+- Display, ActionPerformed, editing so that game doesn't run while in menu state.
+
+- Added GameOver file for game over overlay
+
+- Changed gameoverSeq function for gameoverOverlay
+
+// Score
+
+- created score file for score overlay
+- import score
+- g.drawimage score in paint background.
+- altered message for score overlay and moved it
+- created new blue color for scoreboard.
+- set scoredboard ot myBlue
+- trying out different fonts
+
+- Added exit with q
+
+- added a function that checks collision with ship and alien
+
+- Adding a high score and score check function
+- Displaying scores on Game Over screen
+
+- Added a restart function for when space is pressed at game over.
+
+- Adding a start overlay to menu
+- Adding a restart overlay to gameover
+
+- adding a music function for background music inside of Game.java
+
+- added audio functions for all audio effects in display.java
+- added functions to play when needed
+- adding break function for collision / past bottom checks to play game over audio
