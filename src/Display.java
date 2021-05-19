@@ -17,10 +17,13 @@ public class Display extends JPanel implements ActionListener{
   private Menu menuOverlay = new Menu(0, 0);
   private Score scoreOverlay = new Score(0, -10);
   private Start startOverlay = new Start(0, 0);
+  private Level levelOverlay = new Level(0, 0);
   private Restart restartOverlay = new Restart(0, 0);
   private GameOver gameoverOverlay = new GameOver(0, 0);
   private List<Alien> alienList = new ArrayList<>();      //List is way of creating almost like an array of objects but with infinte amount
   private List<Shot> bulletList = new ArrayList<>();      //Using list for bullets, since there should be unlimited
+  // List of ships to represent lives
+  private List<SpaceShip> livesList = new ArrayList<>();  
   private int direction = 1;                              //direction the alien list is moving. can either be 1 for right or -1 for left
   private boolean paused = false;                         //variable determines if frames of the game is momentarily paused
   private int bulletDelay = 0;
@@ -33,6 +36,9 @@ public class Display extends JPanel implements ActionListener{
   private boolean menu = true;
   private int countPoints = 0;
   private int highScore = 0;
+  private int pointValue = 50;
+  private int level = 1;
+  private int lives = 3;
 
   private Color myBlue = new Color(183, 227, 254);
                                      
@@ -45,6 +51,7 @@ public class Display extends JPanel implements ActionListener{
     setBackground(Color.BLACK);
     setPreferredSize(new Dimension(1920,1080));     
     createAliens();
+    createLives();
     run();
   }
   
@@ -80,15 +87,36 @@ public class Display extends JPanel implements ActionListener{
 
   private void restart(){
     if(gameover == true){
+      lives = 3;
       alienList.clear();
       createAliens();
+      createLives();
       countPoints = 0;
       gameover = false;
       lastpos = 7;
+      pointValue = 50;
+      level = 1;
     }
   }
+
+  private void levelUp(){
+    createAliens();
+    lastpos = 7;    
+    pointValue += 25;
+    for (int i = 0; i < alienList.size(); i++){
+      alienList.get(i).movementSpeed += 15;
+    }
+    level++;
+  }
+
+  private void restartLevel(){
+    alienList.clear();
+    createAliens();
+    lastpos = 7;
+    lives--;
+    removeLife();
+  }
   
-  //run once in beginning
   private void createAliens(){
     for (int i = 0; i < 5; i++) {
       for (int j = 0; j < 8; j++) {
@@ -97,12 +125,17 @@ public class Display extends JPanel implements ActionListener{
       }
     }
   } 
+
+  private void createLives(){
+    for (int i = 0; i < lives; i++) {
+      SpaceShip temp = new SpaceShip(80*i , 10);  //Creating aliens and positioning them accordingly
+      livesList.add(temp);
+    }
+  }
   
-  
-  
-  
-  
-  
+  private void removeLife(){
+    livesList.remove(lives);
+  }
   
    //movement of my objects.   when key pressed this runs
   private class TAdapter extends KeyAdapter { //when key pressed this runs
@@ -183,6 +216,7 @@ public class Display extends JPanel implements ActionListener{
     paintSpaceShip(g);
     paintLaser(g);
     paintAliens(g);
+    paintLives(g);
     
      if (gameover == true){
        gameOverSeq(g);
@@ -213,6 +247,12 @@ public class Display extends JPanel implements ActionListener{
     g.setFont(font);
     // g.drawString(message , 50, 600);   //zetcode: https://zetcode.com/javagames/spaceinvaders/
     g.drawString(message, 250, 1042);
+
+    // level
+    g.drawImage(levelOverlay.getImage(),levelOverlay.getX(), levelOverlay.getY(), this);
+    // Text for level
+    String levelText = Integer.toString(level);
+    g.drawString(levelText, 1750, 1042);
   }
                                          
 }
@@ -230,6 +270,12 @@ public class Display extends JPanel implements ActionListener{
   public void paintAliens(Graphics g){
     for (Alien alien : alienList){ //print the list of aliens
       g.drawImage(alien.getImage(), alien.getX(), alien.getY(), this); 
+    }
+  }
+
+  public void paintLives(Graphics g){
+    for (SpaceShip life : livesList){ //print the list of lives
+      g.drawImage(life.getImage(), life.getX(), life.getY(), this); 
     }
   }
   
@@ -259,7 +305,7 @@ public class Display extends JPanel implements ActionListener{
           } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
             e.printStackTrace();
           }
-          countPoints += 50;
+          countPoints += pointValue;
         }
       }
     }  
@@ -268,13 +314,17 @@ public class Display extends JPanel implements ActionListener{
    outerloop:
     for (int i = 0; i < alienList.size(); i++){
       Alien temp = alienList.get(i);
-      if (temp.getY() >= 950){
+      if ((temp.getY() >= 950) && (lives ==0)){
         gameover = true;
         try {
           gameoverSound();
         } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
           e.printStackTrace();
         }
+        break outerloop;
+      }
+      else if (temp.getY() >= 950){
+        restartLevel();
         break outerloop;
       }     
     }
@@ -296,13 +346,18 @@ public class Display extends JPanel implements ActionListener{
       Alien temp = alienList.get(i); 
       if (temp.getX() > (spaceship.getX()-20) &&
       (temp.getX() < (spaceship.getWidth() + spaceship.getX() + 20)) &&
-      (temp.getY() > (spaceship.getY() - 25))){   //x and y is top left point
+      (temp.getY() > (spaceship.getY() - 25)) && (lives==0)){   //x and y is top left point
         gameover = true;
         try {
           gameoverSound();
         } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
           e.printStackTrace();
         }
+        break outerloop;
+      } else if (temp.getX() > (spaceship.getX()-20) &&
+      (temp.getX() < (spaceship.getWidth() + spaceship.getX() + 20)) &&
+      (temp.getY() > (spaceship.getY() - 25))) {
+        restartLevel();
         break outerloop;
       }
     }
@@ -362,6 +417,10 @@ public class Display extends JPanel implements ActionListener{
       if (temp.getVisible() == false) {    //if alien shot remove
         alienList.remove(temp);
       } 
+    }
+
+    if (alienList.size() == 0){
+      levelUp();
     }
       
   }

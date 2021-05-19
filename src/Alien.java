@@ -1,6 +1,6 @@
 public class Alien extends Sprite{
   private int movementCounter = 0;
-  
+  public int movementSpeed = 70;
   
   public Alien(int x, int y){
     super(x,y);
@@ -10,8 +10,7 @@ public class Alien extends Sprite{
   public void moveX(int d){                  //move alien right or left 
     movementCounter++;
     if (movementCounter%50==0){              //only when count is 100. meaning that there is a dealy on the alien movement speed
-      x += (d * (this.getWidth() - 40 ));   //otherwise the aliens and spaceship move at the same speed
-                                            
+      x += (d*movementSpeed);   //otherwise the aliens and spaceship move at the same speed                                        
     }
   }
   

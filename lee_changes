@@ -1,3 +1,5 @@
+// These line numbers no longer mean anything...
+
 - Display (line 32) changed dimension to 1920x1080
 - Display (line 13) removed x offset
 - Display line 72 working with Alien offsets, creating more aliens
@@ -58,3 +60,21 @@
 - added audio functions for all audio effects in display.java
 - added functions to play when needed
 - adding break function for collision / past bottom checks to play game over audio
+
+LEVEL UP:
+
+- added pointValue var to track points (points increase per level)
+- added movement Speed var in Alien so that can change speed with level up
+- Adding Level overlay and text to display level
+- Need to add level up sfx, don't know where to find anything good...
+
+MULTIPLE LIVES:
+
+- adding a lives variable, this could get complicated...
+- decreasing lives on collision and alien passing
+- adding a restartLevel function 
+- added a create lives function , similar to create aliens
+- added a paintLives function 
+
+
+- implement Shane's code, debug last pos
