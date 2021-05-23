@@ -28,7 +28,7 @@ public class Game extends JFrame{
   } 
 
   public static void music() throws LineUnavailableException, IOException, UnsupportedAudioFileException{
-    File musicFile = new File("newres\\audio\\c152 - Night Mission.wav");
+    File musicFile = new File("newres\\audio\\c152 - Night Mission2.wav");
       
     AudioInputStream audioStream = AudioSystem.getAudioInputStream(musicFile);
     Clip clip = AudioSystem.getClip();

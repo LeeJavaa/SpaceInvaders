@@ -476,7 +476,7 @@ public class Display extends JPanel implements ActionListener{
     FloatControl laserGainControl = (FloatControl) laserClip.getControl(FloatControl.Type.MASTER_GAIN);
 
     // set the gain (between 0.0 and 1.0)
-    double gain = 0.5;   
+    double gain = 0.3;   
     float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
     laserGainControl.setValue(dB);
   }  
@@ -497,7 +497,7 @@ public class Display extends JPanel implements ActionListener{
     FloatControl explosionGainControl = (FloatControl) explosionClip.getControl(FloatControl.Type.MASTER_GAIN);
 
     // set the gain (between 0.0 and 1.0)
-    double gain = 0.6;   
+    double gain = 0.3;   
     float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
     explosionGainControl.setValue(dB);
   }  
